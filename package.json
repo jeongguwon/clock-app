@@ -1,0 +1,33 @@
+{
+  "name": "clock-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "http-server . -p 5173 -c-1",
+    "start": "npm run dev",
+    "sync:web": "node scripts/sync-web.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsc -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeongguwon/clock-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/jeongguwon/clock-app/issues"
+  },
+  "homepage": "https://github.com/jeongguwon/clock-app#readme",
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "http-server": "^14.1.1",
+    "tsx": "^4.23.11",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}

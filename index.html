@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TIME MASTER</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" id="app-shell">
+      <section class="view home-view is-active" data-view="home">
+        <div class="home-topbar">
+          <button class="menu-btn" type="button" id="home-menu-toggle" aria-expanded="false" aria-controls="home-menu-panel">메뉴</button>
+          <div class="home-menu-panel" id="home-menu-panel" hidden>
+            <button class="ghost-btn menu-link-btn" type="button" data-goto="skins">스킨</button>
+            <button class="ghost-btn menu-link-btn" type="button" data-goto="challenges">도전과제</button>
+          </div>
+        </div>
+
+        <section class="clock-card" aria-label="실시간 아날로그 시계">
+          <div class="clock" role="img" aria-label="현재 시각" data-clock="realtime">
+            <div class="clock-center"></div>
+            <div class="hand hour" data-hand="hour"></div>
+            <div class="hand minute" data-hand="minute"></div>
+            <div class="hand second" data-hand="second"></div>
+          </div>
+        </section>
+
+        <nav class="mode-nav" aria-label="학습 모드 선택">
+          <button class="mode-btn" type="button" data-goto="study">공부하기</button>
+          <button class="mode-btn" type="button" data-goto="quiz">문제풀기</button>
+          <button class="mode-btn" type="button" data-goto="timeattack">타임어택</button>
+        </nav>
+      </section>
+
+      <section class="view" data-view="skins">
+        <header class="title-wrap">
+          <h2>스킨 창</h2>
+          <p>해금한 스킨을 선택해 적용하세요</p>
+        </header>
+
+        <section class="panel-card skin-panel">
+          <p id="equipped-skin-label">현재 스킨: 기본</p>
+          <div class="skin-grid" id="skin-grid"></div>
+        </section>
+
+        <div class="action-row">
+          <button class="ghost-btn" type="button" data-goto="home">메인으로</button>
+        </div>
+      </section>
+
+      <section class="view" data-view="challenges">
+        <header class="title-wrap">
+          <h2>도전과제 창</h2>
+          <p>진행 상황과 최근 배지 활동을 확인하세요</p>
+        </header>
+
+        <section class="panel-card challenge-panel">
+          <h3>도전과제 진행률</h3>
+          <p id="challenge-summary" class="challenge-summary">완료 0/4</p>
+          <ul id="challenge-progress-list" class="challenge-list"></ul>
+          <p class="challenge-activity-title">최근 배지 활동</p>
+          <ul id="recent-activity-list" class="recent-activity-list"></ul>
+        </section>
+
+        <div class="action-row">
+          <button class="ghost-btn" type="button" data-goto="home">메인으로</button>
+        </div>
+      </section>
+
+      <section class="view" data-view="study">
+        <header class="title-wrap">
+          <h2>공부하기</h2>
+          <p>랜덤 시각을 보고 개념을 순서대로 학습해요</p>
+        </header>
+
+        <section class="clock-card" aria-label="학습용 랜덤 시계">
+          <div class="clock" role="img" aria-label="학습 시각" data-clock="study">
+            <div class="clock-center"></div>
+            <div class="hand hour" data-hand="hour"></div>
+            <div class="hand minute" data-hand="minute"></div>
+            <div class="hand second" data-hand="second"></div>
+          </div>
+          <p class="digital-time" id="study-digital">00:00:00</p>
+          <p class="study-step" id="study-step">시침</p>
+        </section>
+
+        <section class="panel-card study-guide-panel">
+          <p class="study-guide-progress" id="study-guide-progress">1 / 4 단계</p>
+          <h3 id="study-guide-title">시침 읽기</h3>
+          <p id="study-guide-text">시침은 시(시간)를 나타냅니다.</p>
+          <ul id="study-guide-points" class="study-guide-points"></ul>
+        </section>
+
+        <div class="action-row">
+          <button class="mode-btn" type="button" id="study-next-step">다음 설명</button>
+          <button class="ghost-btn" type="button" data-goto="home">메인으로</button>
+        </div>
+      </section>
+
+      <section class="view" data-view="quiz">
+        <header class="title-wrap">
+          <h2>문제풀기</h2>
+          <p>20문제, 문제당 5점 시험 모드</p>
+        </header>
+        <section class="panel-card quiz-header">
+          <label for="quiz-difficulty">난이도</label>
+          <select id="quiz-difficulty">
+            <option value="easy">쉬움</option>
+            <option value="normal">보통</option>
+            <option value="hard">어려움</option>
+          </select>
+          <button class="mode-btn" type="button" id="quiz-start">시작</button>
+          <p id="quiz-progress">진행: 0/20</p>
+        </section>
+
+        <section class="clock-card quiz-clock-wrap" aria-label="문제 시계">
+          <div class="clock" role="img" aria-label="문제 시계" data-clock="quiz">
+            <div class="clock-center"></div>
+            <div class="hand hour" data-hand="hour"></div>
+            <div class="hand minute" data-hand="minute"></div>
+            <div class="hand second" data-hand="second"></div>
+          </div>
+          <p class="digital-time" id="quiz-target-text">시계를 보고 시간을 입력하세요</p>
+          <p class="study-step" id="quiz-type">문제 유형: -</p>
+        </section>
+
+        <section class="panel-card answer-panel" id="quiz-type-a-panel">
+          <div class="input-grid">
+            <label>시<input id="quiz-hour" type="number" min="0" max="23" /></label>
+            <label>분<input id="quiz-minute" type="number" min="0" max="59" /></label>
+            <label>초<input id="quiz-second" type="number" min="0" max="59" /></label>
+          </div>
+        </section>
+
+        <section class="panel-card answer-panel" id="quiz-type-b-panel" hidden>
+          <p>시계에서 바늘 근처를 드래그하면 해당 바늘이 선택됩니다.</p>
+          <p class="study-step" id="quiz-drag-help">현재 조정: 없음</p>
+          <p class="study-step" id="quiz-meridiem-help">초침 더블클릭: 파란색(오전) / 빨간색(오후)</p>
+        </section>
+
+        <section class="panel-card answer-panel">
+          <button class="mode-btn" type="button" id="quiz-submit">제출</button>
+          <p id="quiz-feedback">시작 버튼을 눌러 문제를 시작하세요.</p>
+          <p id="quiz-summary"></p>
+        </section>
+
+        <div class="result-overlay" id="quiz-result-overlay" hidden>
+          <section class="panel-card answer-panel result-modal" id="quiz-result-card" hidden>
+            <h3>문제풀기 결과</h3>
+            <p id="quiz-result-text"></p>
+            <div class="result-badges" id="quiz-result-badges"></div>
+            <button class="mode-btn" type="button" id="quiz-restart">다시 시작</button>
+            <button class="ghost-btn" type="button" id="quiz-result-home">메인으로 돌아가기</button>
+          </section>
+        </div>
+        <button class="ghost-btn" type="button" data-goto="home">메인으로</button>
+      </section>
+
+      <section class="view" data-view="timeattack">
+        <header class="title-wrap">
+          <h2>타임어택</h2>
+          <p>60초 안에 최대한 많은 문제를 맞혀보세요</p>
+        </header>
+        <section class="panel-card quiz-header">
+          <label for="ta-difficulty">난이도</label>
+          <select id="ta-difficulty">
+            <option value="easy">쉬움</option>
+            <option value="normal">보통</option>
+            <option value="hard">어려움</option>
+          </select>
+          <button class="mode-btn" type="button" id="ta-start">시작</button>
+          <p id="ta-timer">남은 시간: 60초</p>
+        </section>
+
+        <section class="clock-card quiz-clock-wrap" aria-label="타임어택 시계">
+          <div class="clock" role="img" aria-label="타임어택 시계" data-clock="timeattack">
+            <div class="clock-center"></div>
+            <div class="hand hour" data-hand="hour"></div>
+            <div class="hand minute" data-hand="minute"></div>
+            <div class="hand second" data-hand="second"></div>
+          </div>
+          <p class="digital-time" id="ta-target-text">시계를 보고 시간을 입력하세요</p>
+          <p class="study-step" id="ta-type">문제 유형: -</p>
+        </section>
+
+        <section class="panel-card answer-panel" id="ta-type-a-panel">
+          <div class="input-grid">
+            <label>시<input id="ta-hour" type="number" min="0" max="23" /></label>
+            <label>분<input id="ta-minute" type="number" min="0" max="59" /></label>
+            <label>초<input id="ta-second" type="number" min="0" max="59" /></label>
+          </div>
+        </section>
+
+        <section class="panel-card answer-panel" id="ta-type-b-panel" hidden>
+          <p>시계에서 바늘 근처를 드래그하면 해당 바늘이 선택됩니다.</p>
+          <p class="study-step" id="ta-drag-help">현재 조정: 없음</p>
+          <p class="study-step" id="ta-meridiem-help">초침 더블클릭: 파란색(오전) / 빨간색(오후)</p>
+        </section>
+
+        <section class="panel-card answer-panel">
+          <button class="mode-btn" type="button" id="ta-submit">제출</button>
+          <p id="ta-feedback">시작 버튼을 눌러 타임어택을 시작하세요.</p>
+          <p id="ta-summary"></p>
+        </section>
+
+        <div class="result-overlay" id="ta-result-overlay" hidden>
+          <section class="panel-card answer-panel result-modal" id="ta-result-card" hidden>
+            <h3>타임어택 결과</h3>
+            <p id="ta-result-text"></p>
+            <div class="result-badges" id="ta-result-badges"></div>
+            <button class="mode-btn" type="button" id="ta-restart">다시 시작</button>
+            <button class="ghost-btn" type="button" id="ta-result-home">메인으로 돌아가기</button>
+          </section>
+        </div>
+        <button class="ghost-btn" type="button" data-goto="home">메인으로</button>
+      </section>
+    </main>
+
+    <div id="unlock-toast" class="unlock-toast" role="status" aria-live="polite" aria-atomic="true" hidden>새 스킨이 해금되었습니다!</div>
+    <div id="challenge-fly-card" class="challenge-fly-card" role="status" aria-live="polite" aria-atomic="true" hidden>
+      <p class="challenge-fly-title" id="challenge-fly-title">도전과제 달성!</p>
+      <p class="challenge-fly-detail" id="challenge-fly-detail"></p>
+    </div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

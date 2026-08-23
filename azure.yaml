@@ -1,0 +1,10 @@
+name: clock-app
+metadata:
+  template: clock-app-staticwebapp@0.0.1
+infra:
+  provider: bicep
+services:
+  web:
+    project: ./web
+    language: js
+    host: staticwebapp

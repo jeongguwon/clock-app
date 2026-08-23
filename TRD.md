@@ -6,9 +6,11 @@
 - 버전: v1.0
 - 작성일: 2026-08-08
 - 기반 문서:
-	- IDEATION.md
 	- PRD.md
+- 통합 이력 문서(본 TRD로 병합 후 제거):
+	- IDEATION.md
 	- ARCHITECTURE.md
+	- idea.txt
 - 대상 릴리스: MVP
 
 ---
@@ -30,7 +32,7 @@ MVP 범위:
 - 로컬 저장, 로컬 이벤트 로깅
 
 비범위:
-- 계정/클라우드 동기화
+- 클라우드 동기화
 - 서버 기반 랭킹
 - 결제/광고
 
@@ -52,7 +54,7 @@ MVP 범위:
 ### 3.3 핵심 정책
 - 결정적 채점: 동일 문제/입력은 항상 동일 결과
 - 정책 기반 난이도: Easy/Normal/Hard를 테이블로 관리
-- 1회성 보상: 도전과제 보상은 계정(로컬 사용자) 기준 1회만 지급
+- 1회성 보상: 도전과제 보상은 로컬 사용자 데이터 기준 1회만 지급
 
 ---
 
@@ -436,3 +438,64 @@ FR-11 -> ChallengeEngine, RewardTransaction
 4. 공부하기 30분 조건의 포그라운드 판정 기준 상세화
 
 이 오픈 이슈는 MVP 구현 시작 전 확정이 권장된다.
+
+---
+
+## 16. 통합 부록 (삭제 문서 반영)
+
+### 16.1 제품 핵심 가치
+- 아날로그 시계를 직관적으로 읽는 능력 강화
+- 시/분/초 개념의 단계적 이해
+- AM/PM 및 24시간 표기 이해 강화
+- 게임형 반복 학습을 통한 몰입도 향상
+
+### 16.2 아키텍처 상위 구조
+```mermaid
+flowchart TD
+	UI[Presentation Layer\n화면/컴포넌트/입력] --> APP[Application Layer\nUse Cases/Session Orchestrator]
+	APP --> DOMAIN[Domain Layer\nRules/Scoring/Generators]
+	APP --> STORE[State and Persistence\nIn-memory + Local Storage]
+	APP --> ANALYTICS[Event Logging\nTelemetry Adapter]
+	DOMAIN --> FEEDBACK[Feedback Engine\n오답 원인 분석]
+```
+
+### 16.3 대표 시퀀스 (문제풀이)
+```mermaid
+sequenceDiagram
+	participant U as User
+	participant UI as QuizScreen
+	participant APP as SessionOrchestrator
+	participant D as Domain Engines
+	participant S as State Store
+
+	U->>UI: 문제 시작
+	UI->>APP: start(mode=quiz,difficulty)
+	APP->>D: generateQuestion()
+	D-->>APP: Question
+	APP->>S: save SessionState
+	APP-->>UI: render Question
+
+	U->>UI: 답 제출
+	UI->>APP: submitAnswer(answer)
+	APP->>D: evaluate(answer, question, policy)
+	D-->>APP: EvaluationResult
+	APP->>S: update score/index
+	APP-->>UI: feedback + next or finish
+```
+
+### 16.4 MVP 구현 체크리스트
+- 메인화면 실시간 시계 렌더링
+- 난이도 반영 랜덤 시간 생성기
+- 공부하기 튜토리얼 흐름
+- 문제 유형 A/B UI 및 채점
+- 문제풀기 20문제 점수 계산
+- 타임어택 60초 정답 집계
+- 오답 원인 분석 피드백
+- 스킨 적용 시스템
+- 1회성 도전과제 달성 및 보상
+
+### 16.5 확장 백로그 (Post-MVP)
+- 오답 노트 자동 생성
+- 약점 기반 개인화 추천
+- 일일 미션 및 주간 랭킹
+- 스킨 희귀도 및 애니메이션 확장
